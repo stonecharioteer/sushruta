@@ -1,0 +1,66 @@
+---
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5415:3000"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=sqlite:./database.sqlite
+      - DATABASE_TYPE=sqlite
+      - PORT=3000
+      - LOG_LEVEL=info
+      - CORS_ORIGINS=http://localhost:5416
+    volumes:
+      - ./backend/src:/app/src
+      - ./backend/database:/app/database
+      - backend_node_modules:/app/node_modules
+    depends_on:
+      - db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5416:3000"
+    environment:
+      - VITE_API_URL=http://localhost:5415
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+      - frontend_node_modules:/app/node_modules
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=sushruta
+      - POSTGRES_USER=sushruta
+      - POSTGRES_PASSWORD=sushruta_dev_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    # This service is ready for PostgreSQL migration
+    # For now, backend uses SQLite
+
+volumes:
+  backend_node_modules:
+  frontend_node_modules:
+  postgres_data:
+
+networks:
+  default:
+    name: sushruta_network

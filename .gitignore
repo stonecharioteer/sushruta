@@ -151,3 +151,28 @@ Sessionx.vim
 tags
 # Persistent undo
 [._]*.un~
+
+# Project specific
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Test coverage
+coverage/
+.nyc_output/
+.coverage
+
+# Environment files (keep .env.example)
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Build outputs
+build/
+dist/
