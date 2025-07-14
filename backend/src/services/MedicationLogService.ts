@@ -118,6 +118,26 @@ export class MedicationLogService {
       .getMany();
   }
 
+  async findLogsByDate(date: Date, familyMemberId?: string): Promise<MedicationLog[]> {
+    const startOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const endOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
+
+    const queryBuilder = this.medicationLogRepository
+      .createQueryBuilder('log')
+      .leftJoinAndSelect('log.prescription', 'prescription')
+      .leftJoinAndSelect('prescription.familyMember', 'familyMember')
+      .leftJoinAndSelect('prescription.medication', 'medication')
+      .where('log.scheduledTime BETWEEN :startOfDay AND :endOfDay', { startOfDay, endOfDay });
+
+    if (familyMemberId) {
+      queryBuilder.andWhere('prescription.familyMemberId = :familyMemberId', { familyMemberId });
+    }
+
+    return await queryBuilder
+      .orderBy('log.scheduledTime', 'ASC')
+      .getMany();
+  }
+
   async update(id: string, data: UpdateMedicationLogDTO): Promise<MedicationLog> {
     const medicationLog = await this.findById(id);
 

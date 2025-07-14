@@ -72,6 +72,24 @@ export class MedicationLogController {
     }
   };
 
+  getScheduleForDate = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { date } = req.params;
+      const { familyMemberId } = req.query;
+      
+      const targetDate = new Date(date);
+      const logsForDate = await this.medicationLogService.findLogsByDate(
+        targetDate,
+        familyMemberId && typeof familyMemberId === 'string' ? familyMemberId : undefined
+      );
+
+      const response = MedicationLogView.formatDailySchedule(logsForDate, targetDate);
+      res.json(ResponseFormatter.success(response, 'Medication schedule retrieved successfully'));
+    } catch (error) {
+      next(error);
+    }
+  };
+
   getComplianceStats = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { familyMemberId, days } = req.query;

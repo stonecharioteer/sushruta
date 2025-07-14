@@ -27,6 +27,11 @@ router.get(
 );
 
 router.get(
+  '/schedule/:date',
+  medicationLogController.getScheduleForDate
+);
+
+router.get(
   '/compliance-stats',
   medicationLogController.getComplianceStats
 );

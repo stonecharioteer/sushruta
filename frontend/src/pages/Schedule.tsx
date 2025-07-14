@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { format, addDays, subDays } from 'date-fns';
-import { ChevronLeft, ChevronRight, Calendar, Clock, Check, X, AlertCircle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar, Clock } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
-import { medicationLogsApi, familyMembersApi } from '@/services/api';
-import { MedicationLogStatus, MedicationLog } from '@/types/api';
+import { familyMembersApi, prescriptionsApi } from '@/services/api';
 
 const Schedule: React.FC = () => {
-  const queryClient = useQueryClient();
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [updatingLog, setUpdatingLog] = useState<string | null>(null);
 
-  const { data: schedule, isLoading: loadingSchedule } = useQuery(
-    ['schedule', format(selectedDate, 'yyyy-MM-dd')],
-    () => medicationLogsApi.getScheduleForDate(format(selectedDate, 'yyyy-MM-dd'))
+  // For now, let's show active prescriptions as the schedule instead of medication logs
+  const { data: activePrescriptions, isLoading: loadingSchedule } = useQuery(
+    ['active-prescriptions'],
+    () => prescriptionsApi.getAll(undefined, true)
   );
 
   const { data: familyMembers } = useQuery(
@@ -23,27 +21,6 @@ const Schedule: React.FC = () => {
     familyMembersApi.getAll
   );
 
-  const updateLogMutation = useMutation(
-    ({ logId, status }: { logId: string; status: MedicationLogStatus }) =>
-      medicationLogsApi.updateStatus(logId, status),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['schedule']);
-        queryClient.invalidateQueries(['todays-schedule']);
-        queryClient.invalidateQueries(['compliance-stats']);
-        setUpdatingLog(null);
-      },
-      onError: (error) => {
-        console.error('Error updating medication log:', error);
-        setUpdatingLog(null);
-      }
-    }
-  );
-
-  const handleStatusUpdate = (logId: string, status: MedicationLogStatus) => {
-    setUpdatingLog(logId);
-    updateLogMutation.mutate({ logId, status });
-  };
 
   const goToPreviousDay = () => {
     setSelectedDate(prev => subDays(prev, 1));
@@ -67,40 +44,23 @@ const Schedule: React.FC = () => {
     );
   }
 
-  const getStatusColor = (status: MedicationLogStatus) => {
-    switch (status) {
-      case MedicationLogStatus.TAKEN:
-        return 'text-green-600 bg-green-100';
-      case MedicationLogStatus.MISSED:
-        return 'text-red-600 bg-red-100';
-      case MedicationLogStatus.SKIPPED:
-        return 'text-gray-600 bg-gray-100';
-      default:
-        return 'text-yellow-600 bg-yellow-100';
-    }
-  };
+  // Filter prescriptions that apply to the selected date and group by family member
+  const applicablePrescriptions = activePrescriptions?.filter(prescription => {
+    const prescriptionStartDate = new Date(prescription.startDate);
+    const prescriptionEndDate = prescription.endDate ? new Date(prescription.endDate) : null;
+    
+    return prescriptionStartDate <= selectedDate && 
+           (!prescriptionEndDate || prescriptionEndDate >= selectedDate);
+  }) || [];
 
-  const getStatusIcon = (status: MedicationLogStatus) => {
-    switch (status) {
-      case MedicationLogStatus.TAKEN:
-        return <Check className="h-4 w-4" />;
-      case MedicationLogStatus.MISSED:
-        return <X className="h-4 w-4" />;
-      case MedicationLogStatus.SKIPPED:
-        return <AlertCircle className="h-4 w-4" />;
-      default:
-        return <Clock className="h-4 w-4" />;
-    }
-  };
-
-  const groupedLogs = schedule?.logs?.reduce((acc: Record<string, MedicationLog[]>, log: MedicationLog) => {
-    const memberId = log.prescription.familyMemberId;
+  const groupedPrescriptions = applicablePrescriptions.reduce((acc: Record<string, typeof applicablePrescriptions>, prescription) => {
+    const memberId = prescription.familyMember.id;
     if (!acc[memberId]) {
       acc[memberId] = [];
     }
-    acc[memberId].push(log);
+    acc[memberId].push(prescription);
     return acc;
-  }, {} as Record<string, MedicationLog[]>) || {};
+  }, {} as Record<string, typeof applicablePrescriptions>);
 
   return (
     <div className="space-y-6">
@@ -146,36 +106,24 @@ const Schedule: React.FC = () => {
       </Card>
 
       {/* Schedule Summary */}
-      {schedule && (
+      {applicablePrescriptions.length > 0 && (
         <Card>
           <CardHeader>
             <CardTitle>Daily Summary</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-2">
               <div className="text-center">
                 <div className="text-2xl font-bold text-gray-900">
-                  {schedule.summary.total}
+                  {applicablePrescriptions.length}
                 </div>
-                <div className="text-sm text-gray-500">Total</div>
+                <div className="text-sm text-gray-500">Active Prescriptions</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-600">
-                  {schedule.summary.taken}
+                <div className="text-2xl font-bold text-blue-600">
+                  {Object.keys(groupedPrescriptions).length}
                 </div>
-                <div className="text-sm text-gray-500">Taken</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-red-600">
-                  {schedule.summary.missed}
-                </div>
-                <div className="text-sm text-gray-500">Missed</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-600">
-                  {schedule.summary.pending}
-                </div>
-                <div className="text-sm text-gray-500">Pending</div>
+                <div className="text-sm text-gray-500">Family Members</div>
               </div>
             </div>
           </CardContent>
@@ -183,16 +131,19 @@ const Schedule: React.FC = () => {
       )}
 
       {/* Schedule by Family Member */}
-      {Object.keys(groupedLogs).length === 0 ? (
+      {Object.keys(groupedPrescriptions).length === 0 ? (
         <Card>
           <CardContent className="p-6 text-center">
             <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
             <p className="text-gray-500">No medications scheduled for this date.</p>
+            <p className="text-sm text-gray-400 mt-2">
+              Create prescriptions to see the medication schedule here.
+            </p>
           </CardContent>
         </Card>
       ) : (
         <div className="space-y-6">
-          {Object.entries(groupedLogs).map(([memberId, logs]: [string, MedicationLog[]]) => {
+          {Object.entries(groupedPrescriptions).map(([memberId, prescriptions]) => {
             const member = familyMembers?.find(m => m.id === memberId);
             return (
               <Card key={memberId}>
@@ -200,76 +151,41 @@ const Schedule: React.FC = () => {
                   <CardTitle className="flex items-center">
                     {member?.name || 'Unknown Member'}
                     <span className="ml-2 text-sm font-normal text-gray-500">
-                      ({logs.length} medication{logs.length !== 1 ? 's' : ''})
+                      ({prescriptions.length} medication{prescriptions.length !== 1 ? 's' : ''})
                     </span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {logs
-                      .sort((a: MedicationLog, b: MedicationLog) => a.scheduledTime.localeCompare(b.scheduledTime))
-                      .map((log: MedicationLog) => (
-                        <div
-                          key={log.id}
-                          className="flex items-center justify-between p-4 border rounded-lg"
-                        >
-                          <div className="flex items-center space-x-4">
-                            <div className={`p-2 rounded-full ${getStatusColor(log.status)}`}>
-                              {getStatusIcon(log.status)}
-                            </div>
-                            <div>
-                              <div className="font-medium text-gray-900">
-                                {log.prescription.medication.name}
-                              </div>
-                              <div className="text-sm text-gray-500">
-                                {log.dosage} • {format(new Date(`2000-01-01T${log.scheduledTime}`), 'h:mm a')}
-                              </div>
-                              {log.notes && (
-                                <div className="text-sm text-gray-600 mt-1">
-                                  {log.notes}
-                                </div>
-                              )}
-                            </div>
+                    {prescriptions.map((prescription) => (
+                      <div
+                        key={prescription.id}
+                        className="flex items-center justify-between p-4 border rounded-lg"
+                      >
+                        <div className="flex items-center space-x-4">
+                          <div className="p-2 rounded-full bg-blue-100 text-blue-600">
+                            <Clock className="h-4 w-4" />
                           </div>
-                          
-                          <div className="flex space-x-2">
-                            {log.status === MedicationLogStatus.PENDING && (
-                              <>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => handleStatusUpdate(log.id, MedicationLogStatus.TAKEN)}
-                                  loading={updatingLog === log.id}
-                                  className="text-green-600 hover:bg-green-50"
-                                >
-                                  <Check className="h-4 w-4" />
-                                  Taken
-                                </Button>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => handleStatusUpdate(log.id, MedicationLogStatus.MISSED)}
-                                  loading={updatingLog === log.id}
-                                  className="text-red-600 hover:bg-red-50"
-                                >
-                                  <X className="h-4 w-4" />
-                                  Missed
-                                </Button>
-                              </>
-                            )}
-                            {log.status !== MedicationLogStatus.PENDING && (
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleStatusUpdate(log.id, MedicationLogStatus.PENDING)}
-                                loading={updatingLog === log.id}
-                              >
-                                Reset
-                              </Button>
-                            )}
+                          <div>
+                            <div className="font-medium text-gray-900">
+                              {prescription.medication.name}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              {prescription.medication.dosage} • {prescription.medication.frequency}
+                            </div>
+                            <div className="text-sm text-gray-400">
+                              Active prescription since {prescription.startDate}
+                            </div>
                           </div>
                         </div>
-                      ))}
+                        
+                        <div className="flex space-x-2">
+                          <span className="px-2 py-1 text-xs bg-green-100 text-green-700 rounded-full">
+                            Active
+                          </span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </CardContent>
               </Card>
