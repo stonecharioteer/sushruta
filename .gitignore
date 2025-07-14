@@ -177,4 +177,4 @@ coverage/
 build/
 dist/
 frontend/playwright-report
-frontest/test-results/
+frontend/test-results/

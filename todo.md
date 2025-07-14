@@ -1,0 +1,5 @@
+- [ ] Checkup scheduling
+- [ ] Checkup types (follow up, investigation, routine, vaccination)
+- [ ] Calendar integration
+- [ ] Fix bug where if a prescription has been paused and unpaused, it doesn't show up in the schedule correctly.
+- [ ] If I don't mark a medicine as taken for a day, mark it as missed automatically at 12:00 the next day.
