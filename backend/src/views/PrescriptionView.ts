@@ -48,12 +48,12 @@ export class PrescriptionView {
         dosage: prescription.medication.dosage,
         frequency: prescription.medication.frequency
       },
-      startDate: prescription.startDate.toISOString().split('T')[0],
-      endDate: prescription.endDate?.toISOString().split('T')[0],
+      startDate: prescription.startDate instanceof Date ? prescription.startDate.toISOString().split('T')[0] : String(prescription.startDate),
+      endDate: prescription.endDate ? (prescription.endDate instanceof Date ? prescription.endDate.toISOString().split('T')[0] : String(prescription.endDate)) : undefined,
       active: prescription.active,
       logCount,
-      createdAt: prescription.createdAt.toISOString(),
-      updatedAt: prescription.updatedAt.toISOString()
+      createdAt: prescription.createdAt instanceof Date ? prescription.createdAt.toISOString() : String(prescription.createdAt),
+      updatedAt: prescription.updatedAt instanceof Date ? prescription.updatedAt.toISOString() : String(prescription.updatedAt)
     };
   }
 
@@ -62,8 +62,8 @@ export class PrescriptionView {
 
     const medicationLogs = prescription.medicationLogs?.map(log => ({
       id: log.id,
-      scheduledTime: log.scheduledTime.toISOString(),
-      takenTime: log.takenTime?.toISOString(),
+      scheduledTime: log.scheduledTime instanceof Date ? log.scheduledTime.toISOString() : String(log.scheduledTime),
+      takenTime: log.takenTime ? (log.takenTime instanceof Date ? log.takenTime.toISOString() : String(log.takenTime)) : undefined,
       status: log.status,
       notes: log.notes
     })) || [];

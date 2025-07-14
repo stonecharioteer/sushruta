@@ -8,7 +8,9 @@ COPY package*.json ./
 RUN npm ci --omit=dev
 
 # Development stage
-FROM base AS development
+FROM node:18-alpine AS development
+WORKDIR /app
+COPY package*.json ./
 RUN npm ci
 COPY . .
 EXPOSE 3000

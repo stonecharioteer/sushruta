@@ -7,7 +7,7 @@
     "@": "dist"
   },
   "scripts": {
-    "dev": "nodemon src/app.ts",
+    "dev": "npx nodemon src/app.ts",
     "build": "tsc",
     "start": "node dist/app.js",
     "test": "jest",

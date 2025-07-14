@@ -51,7 +51,10 @@ export class PrescriptionService {
       active: data.active ?? true
     });
 
-    return await this.prescriptionRepository.save(prescription);
+    const savedPrescription = await this.prescriptionRepository.save(prescription);
+    
+    // Return the prescription with relations loaded
+    return await this.findById(savedPrescription.id);
   }
 
   async findAll(): Promise<Prescription[]> {

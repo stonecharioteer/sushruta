@@ -8,6 +8,8 @@ import FamilyMemberForm from '@/pages/FamilyMemberForm';
 import Medications from '@/pages/Medications';
 import MedicationForm from '@/pages/MedicationForm';
 import Schedule from '@/pages/Schedule';
+import Prescriptions from '@/pages/Prescriptions';
+import PrescriptionForm from '@/pages/PrescriptionForm';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,6 +33,9 @@ const App: React.FC = () => {
             <Route path="/medications" element={<Medications />} />
             <Route path="/medications/new" element={<MedicationForm />} />
             <Route path="/medications/:id/edit" element={<MedicationForm />} />
+            <Route path="/prescriptions" element={<Prescriptions />} />
+            <Route path="/prescriptions/new" element={<PrescriptionForm />} />
+            <Route path="/prescriptions/:id/edit" element={<PrescriptionForm />} />
             <Route path="/schedule" element={<Schedule />} />
             <Route path="*" element={<div>Page not found</div>} />
           </Routes>

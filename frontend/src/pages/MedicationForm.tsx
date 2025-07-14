@@ -119,7 +119,7 @@ const MedicationForm: React.FC = () => {
     }
   };
 
-  if (isLoading) {
+  if (isLoading && isEditing) {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-lg">Loading...</div>

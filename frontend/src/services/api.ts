@@ -15,7 +15,7 @@ import type {
   ComplianceStats,
 } from '@/types/api';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5415';
+const API_URL = import.meta.env.VITE_API_URL || `${window.location.protocol}//${window.location.hostname}:5415`;
 
 const api = axios.create({
   baseURL: API_URL,

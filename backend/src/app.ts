@@ -15,9 +15,29 @@ const app = express();
 // Security middleware
 app.use(helmet());
 
-// CORS configuration
+// CORS configuration - allow any origin that ends with the configured port
 app.use(cors({
-  origin: config.cors.origins,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    
+    // Allow all origins in development
+    if (config.cors.origins.includes('*')) {
+      return callback(null, true);
+    }
+    
+    // Allow any origin that ends with :5416 (the frontend port)
+    if (origin.endsWith(':5416')) {
+      return callback(null, true);
+    }
+    
+    // Allow configured origins
+    if (config.cors.origins.includes(origin)) {
+      return callback(null, true);
+    }
+    
+    callback(new Error('Not allowed by CORS'));
+  },
   credentials: true
 }));
 
