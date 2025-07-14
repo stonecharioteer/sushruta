@@ -25,6 +25,21 @@ A family-friendly pill tracking application for managing medication schedules fo
 - **Architecture**: MVC pattern + 12-factor app methodology
 - **DevOps**: Docker Compose + Just commands
 
+## Gallery
+
+![Dashboard](./docs/images/dashboard.png)
+_Dashboard_
+![Family Members](./docs/images/family-members.png)
+_Family Members_
+![Medication Page](./docs/images/medications.png)
+_Medications_
+![Prescriptions Page](./docs/images/prescriptions.png)
+_Prescriptions_
+![Schedule Page](./docs/images/schedule.png)
+_Schedule_
+![About Page](./docs/images/about.png)
+_About_
+
 ## Quick Start
 
 ### Prerequisites
@@ -50,6 +65,7 @@ just open
 ### Development Setup
 
 1. **Clone and setup environment**:
+
    ```bash
    git clone <repository-url>
    cd sushruta
@@ -57,39 +73,42 @@ just open
    ```
 
 2. **Start with Just commands** (recommended):
+
    ```bash
    # Start complete demo with health checks
    just demo
-   
+
    # View logs
    just logs
-   
+
    # Check status
    just status
-   
+
    # Run tests
    just test
-   
+
    # Stop services
    just stop
    ```
 
 3. **Or start with Docker Compose directly**:
+
    ```bash
    # Start all services (backend on :5415, frontend on :5416)
    docker compose up -d
-   
+
    # View logs
    docker compose logs -f
    ```
 
 4. **Local development** (optional):
+
    ```bash
    # Backend
    cd backend
    npm install
    npm run dev  # Starts on :3000
-   
+
    # Frontend (in new terminal)
    cd frontend
    npm install
@@ -107,12 +126,13 @@ just open
 🎉 **Feature Complete - Ready for Production**
 
 ### ✅ Completed
+
 - **Backend**: Complete Express.js + TypeScript + PostgreSQL implementation
 - **Frontend**: React + TypeScript + Tailwind CSS responsive UI
 - **Database**: PostgreSQL with TypeORM, proper entity relationships
 - **Testing**: Comprehensive test suites (Jest, Vitest, Playwright E2E)
 - **Architecture**: Full MVC pattern with Services, Views, Controllers, Routes
-- **Features**: 
+- **Features**:
   - Family member management (humans and pets)
   - Medication inventory and prescription tracking
   - Daily medication schedules and compliance reporting
@@ -122,9 +142,11 @@ just open
 - **Quality**: ESLint, TypeScript, comprehensive validation
 
 ### 🔄 Current Branch: feat/pet-types
+
 This branch includes pet type support and represents the complete initial implementation ready for production use.
 
 ### 🚀 Ready for Production
+
 The application is feature-complete with all core functionality implemented and tested. Ready for deployment and real-world usage.
 
 ## Database Schema
@@ -134,19 +156,20 @@ The application is feature-complete with all core functionality implemented and 
 family_members: id(uuid), name, type(enum), date_of_birth, gender(enum), species(enum),
                 created_at, updated_at
 
--- Available medications  
+-- Available medications
 medications: id(uuid), name, dosage, frequency, instructions, created_at, updated_at
 
 -- Prescribed medications to family members
-prescriptions: id(uuid), family_member_id, medication_id, start_date, end_date, 
+prescriptions: id(uuid), family_member_id, medication_id, start_date, end_date,
               active, created_at, updated_at
 
 -- Medication intake logs
-medication_logs: id(uuid), prescription_id, scheduled_time, taken_time, 
+medication_logs: id(uuid), prescription_id, scheduled_time, taken_time,
                 status(enum), notes, created_at
 ```
 
 ### Enums
+
 - **type**: `human`, `pet`
 - **gender**: `male`, `female` (optional)
 - **species**: `cat`, `dog` (required for pets)
@@ -201,6 +224,7 @@ cd frontend && npm run test:coverage
 The application uses PostgreSQL by default with Docker Compose. For development with SQLite:
 
 1. Update environment variables:
+
    ```bash
    DATABASE_TYPE=sqlite
    DATABASE_URL=sqlite:./database.sqlite
