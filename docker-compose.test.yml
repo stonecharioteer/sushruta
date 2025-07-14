@@ -1,0 +1,33 @@
+---
+services:
+  backend-test:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: test
+    environment:
+      NODE_ENV: test
+      DATABASE_URL: "sqlite::memory:"
+      DATABASE_TYPE: sqlite
+      LOG_LEVEL: error
+    volumes:
+      - ./backend:/app
+      - backend_test_node_modules:/app/node_modules
+    command: npm test
+
+  frontend-test:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: test
+    environment:
+      NODE_ENV: test
+      VITE_API_URL: http://localhost:3000
+    volumes:
+      - ./frontend:/app
+      - frontend_test_node_modules:/app/node_modules
+    command: npm test
+
+volumes:
+  backend_test_node_modules:
+  frontend_test_node_modules:
