@@ -43,6 +43,18 @@ const Prescriptions: React.FC = () => {
     }
   );
 
+  const reactivateMutation = useMutation(
+    (id: string) => prescriptionsApi.update(id, { active: true }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['prescriptions']);
+      },
+      onError: (error) => {
+        console.error('Error reactivating prescription:', error);
+      }
+    }
+  );
+
   const handleDelete = (prescription: Prescription) => {
     if (window.confirm(`Are you sure you want to delete the prescription for ${prescription.familyMember.name}?`)) {
       setDeletingPrescription(prescription.id);
@@ -53,6 +65,8 @@ const Prescriptions: React.FC = () => {
   const handleToggleActive = (prescription: Prescription) => {
     if (prescription.active) {
       deactivateMutation.mutate(prescription.id);
+    } else {
+      reactivateMutation.mutate(prescription.id);
     }
   };
 

@@ -76,41 +76,42 @@ const About: React.FC = () => {
         <Card>
           <CardContent className="p-6 text-center">
             <Shield className="h-12 w-12 text-orange-500 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Privacy First</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Reliable & Secure</h3>
             <p className="text-sm text-gray-600">
-              Self-hosted solution keeping your family's health data completely private and secure.
+              Built with modern security practices and reliable technology to keep your family's health data safe.
             </p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Technology & Open Source */}
+      {/* Quality & Development */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Technology Stack</CardTitle>
+            <CardTitle>Built for Quality</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Backend:</span>
-                <span className="font-medium">Express.js + TypeScript + PostgreSQL</span>
+            <p className="text-gray-700 mb-4">
+              Sushruta is built with modern development practices focused on reliability, 
+              maintainability, and user experience. Every component is designed with 
+              attention to detail and thorough testing.
+            </p>
+            <div className="space-y-2">
+              <div className="flex items-center">
+                <ExternalLink className="h-4 w-4 mr-2 text-gray-500" />
+                <span className="text-sm text-gray-600">Comprehensive test coverage</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Frontend:</span>
-                <span className="font-medium">React + TypeScript + Tailwind CSS</span>
+              <div className="flex items-center">
+                <ExternalLink className="h-4 w-4 mr-2 text-gray-500" />
+                <span className="text-sm text-gray-600">Type-safe development</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Database:</span>
-                <span className="font-medium">PostgreSQL with TypeORM</span>
+              <div className="flex items-center">
+                <ExternalLink className="h-4 w-4 mr-2 text-gray-500" />
+                <span className="text-sm text-gray-600">Mobile-responsive design</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Deployment:</span>
-                <span className="font-medium">Docker Compose</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Testing:</span>
-                <span className="font-medium">Jest + Vitest + Playwright</span>
+              <div className="flex items-center">
+                <ExternalLink className="h-4 w-4 mr-2 text-gray-500" />
+                <span className="text-sm text-gray-600">Modern security practices</span>
               </div>
             </div>
           </CardContent>
@@ -120,31 +121,31 @@ const About: React.FC = () => {
           <CardHeader>
             <CardTitle className="flex items-center">
               <Github className="h-5 w-5 mr-2" />
-              Open Source
+              Development Excellence
             </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-gray-700 mb-4">
-              Sushruta is built with modern web technologies and follows best practices for 
-              maintainability, security, and performance. The codebase is well-documented 
-              and thoroughly tested.
+              Sushruta follows industry best practices for software development, focusing on 
+              code quality, security, and user experience. Every feature is built with 
+              attention to detail and rigorous testing standards.
             </p>
             <div className="space-y-2">
               <div className="flex items-center">
                 <ExternalLink className="h-4 w-4 mr-2 text-gray-500" />
-                <span className="text-sm text-gray-600">Comprehensive test coverage</span>
+                <span className="text-sm text-gray-600">Rigorous quality assurance</span>
               </div>
               <div className="flex items-center">
                 <ExternalLink className="h-4 w-4 mr-2 text-gray-500" />
-                <span className="text-sm text-gray-600">TypeScript for type safety</span>
+                <span className="text-sm text-gray-600">Continuous security updates</span>
               </div>
               <div className="flex items-center">
                 <ExternalLink className="h-4 w-4 mr-2 text-gray-500" />
-                <span className="text-sm text-gray-600">Docker for easy deployment</span>
+                <span className="text-sm text-gray-600">Cross-platform compatibility</span>
               </div>
               <div className="flex items-center">
                 <ExternalLink className="h-4 w-4 mr-2 text-gray-500" />
-                <span className="text-sm text-gray-600">Mobile-responsive design</span>
+                <span className="text-sm text-gray-600">Intuitive user interface</span>
               </div>
             </div>
           </CardContent>
@@ -159,15 +160,15 @@ const About: React.FC = () => {
         <CardContent>
           <div className="prose prose-gray max-w-none">
             <p className="text-gray-700 leading-relaxed">
-              Healthcare is deeply personal. Your family's medication data should remain private, 
-              secure, and under your complete control. Sushruta is designed as a self-hosted 
-              solution that puts you in charge of your data while providing the tools you need 
-              to manage complex medication schedules with confidence.
+              Healthcare is deeply personal. Sushruta is designed to provide the tools you need 
+              to manage complex medication schedules with confidence and precision. Our approach 
+              focuses on clarity, organization, and ease of use for families managing multiple 
+              medication regimens.
             </p>
             <p className="text-gray-700 leading-relaxed mt-4">
               Whether you're caring for elderly parents, managing pet medications, or coordinating 
               treatments for multiple family members, Sushruta provides the structure and clarity 
-              you need without compromising your privacy.
+              you need to keep everyone healthy and on track.
             </p>
           </div>
         </CardContent>
