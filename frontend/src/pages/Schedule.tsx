@@ -174,7 +174,7 @@ const Schedule: React.FC = () => {
                               {prescription.medication.dosage} • {prescription.medication.frequency}
                             </div>
                             <div className="text-sm text-gray-400">
-                              Active prescription since {prescription.startDate}
+                              Active prescription since {new Date(prescription.startDate).toISOString().split('T')[0]}
                             </div>
                           </div>
                         </div>

@@ -162,10 +162,10 @@ const Prescriptions: React.FC = () => {
 
                   <div className="mt-4 flex items-center text-xs text-gray-500">
                     <Calendar className="h-4 w-4 mr-1" />
-                    Started: {new Date(prescription.startDate).toLocaleDateString()}
+                    Started: {new Date(prescription.startDate).toISOString().split('T')[0]}
                     {prescription.endDate && (
                       <span className="ml-2">
-                        - Ends: {new Date(prescription.endDate).toLocaleDateString()}
+                        - Ends: {new Date(prescription.endDate).toISOString().split('T')[0]}
                       </span>
                     )}
                   </div>
@@ -220,10 +220,10 @@ const Prescriptions: React.FC = () => {
 
                   <div className="mt-4 flex items-center text-xs text-gray-500">
                     <Calendar className="h-4 w-4 mr-1" />
-                    Started: {new Date(prescription.startDate).toLocaleDateString()}
+                    Started: {new Date(prescription.startDate).toISOString().split('T')[0]}
                     {prescription.endDate && (
                       <span className="ml-2">
-                        - Ended: {new Date(prescription.endDate).toLocaleDateString()}
+                        - Ended: {new Date(prescription.endDate).toISOString().split('T')[0]}
                       </span>
                     )}
                   </div>

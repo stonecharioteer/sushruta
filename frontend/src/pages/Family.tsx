@@ -111,7 +111,7 @@ const Family: React.FC = () => {
                         <h3 className="text-sm font-medium text-gray-900">{member.name}</h3>
                         <p className="text-sm text-gray-500">
                           {member.dateOfBirth && (
-                            <>Born: {new Date(member.dateOfBirth).toLocaleDateString()}</>
+                            <>Born: {new Date(member.dateOfBirth).toISOString().split('T')[0]}</>
                           )}
                         </p>
                       </div>
@@ -172,7 +172,7 @@ const Family: React.FC = () => {
                         <h3 className="text-sm font-medium text-gray-900">{member.name}</h3>
                         <p className="text-sm text-gray-500">
                           {member.dateOfBirth && (
-                            <>Born: {new Date(member.dateOfBirth).toLocaleDateString()}</>
+                            <>Born: {new Date(member.dateOfBirth).toISOString().split('T')[0]}</>
                           )}
                         </p>
                       </div>

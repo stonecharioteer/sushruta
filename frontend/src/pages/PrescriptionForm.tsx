@@ -3,7 +3,7 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent } from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
-import Input from '@/components/ui/Input';
+import DateInput from '@/components/ui/DateInput';
 import { Label } from '@/components/ui/label';
 import { prescriptionsApi, familyMembersApi, medicationsApi } from '@/services/api';
 import type { CreatePrescriptionRequest } from '@/types/api';
@@ -219,27 +219,26 @@ const PrescriptionForm: React.FC = () => {
               </div>
 
               <div>
-                <Label htmlFor="startDate">Start Date *</Label>
-                <Input
+                <DateInput
                   id="startDate"
-                  type="date"
+                  name="startDate"
+                  label="Start Date *"
                   value={formData.startDate}
                   onChange={(e) => handleInputChange('startDate', e.target.value)}
-                  className={errors.startDate ? 'border-red-500' : ''}
+                  error={errors.startDate}
+                  required
                 />
-                {errors.startDate && <p className="text-sm text-red-500 mt-1">{errors.startDate}</p>}
               </div>
 
               <div>
-                <Label htmlFor="endDate">End Date (Optional)</Label>
-                <Input
+                <DateInput
                   id="endDate"
-                  type="date"
+                  name="endDate"
+                  label="End Date (Optional)"
                   value={formData.endDate}
                   onChange={(e) => handleInputChange('endDate', e.target.value)}
-                  className={errors.endDate ? 'border-red-500' : ''}
+                  error={errors.endDate}
                 />
-                {errors.endDate && <p className="text-sm text-red-500 mt-1">{errors.endDate}</p>}
               </div>
             </div>
 

@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { familyMembersApi } from '@/services/api';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
+import DateInput from '@/components/ui/DateInput';
 import { Card, CardContent } from '@/components/ui/Card';
 import type { CreateFamilyMemberRequest } from '@/types/api';
 import { MemberType } from '@/types/api';
@@ -176,20 +177,14 @@ const FamilyMemberForm: React.FC = () => {
             </div>
 
             <div>
-              <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700 mb-1">
-                Date of Birth
-              </label>
-              <Input
+              <DateInput
                 id="dateOfBirth"
                 name="dateOfBirth"
-                type="date"
+                label="Date of Birth"
                 value={formData.dateOfBirth}
                 onChange={handleInputChange}
-                className={errors.dateOfBirth ? 'border-red-500' : ''}
+                error={errors.dateOfBirth}
               />
-              {errors.dateOfBirth && (
-                <p className="mt-1 text-sm text-red-600">{errors.dateOfBirth}</p>
-              )}
             </div>
 
             <div>
