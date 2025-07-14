@@ -18,7 +18,7 @@ export class Medication {
   @Column({ type: 'text', nullable: true })
   instructions?: string;
 
-  @OneToMany(() => Prescription, prescription => prescription.medication)
+  @OneToMany(() => Prescription, prescription => prescription.medication, { cascade: true })
   prescriptions!: Prescription[];
 
   @CreateDateColumn()

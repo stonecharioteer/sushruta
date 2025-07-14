@@ -13,12 +13,24 @@ export enum MemberType {
   PET = 'pet'
 }
 
+export enum Gender {
+  MALE = 'male',
+  FEMALE = 'female'
+}
+
+export enum Species {
+  CAT = 'cat',
+  DOG = 'dog'
+}
+
 export interface FamilyMember {
   id: string;
   name: string;
   type: MemberType;
   dateOfBirth?: string;
   age?: number;
+  gender?: Gender;
+  species?: Species;
   notes?: string;
   activePrescriptionsCount: number;
   createdAt: string;
@@ -33,6 +45,8 @@ export interface CreateFamilyMemberRequest {
   name: string;
   type: MemberType;
   dateOfBirth?: string;
+  gender?: Gender;
+  species?: Species;
   notes?: string;
 }
 

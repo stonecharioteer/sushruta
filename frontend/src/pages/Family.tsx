@@ -5,6 +5,7 @@ import { Plus, Edit, Trash2, User, Heart } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import IconDisplay from '@/components/ui/IconDisplay';
 import { familyMembersApi } from '@/services/api';
 import { FamilyMember, MemberType } from '@/types/api';
 
@@ -68,7 +69,7 @@ const Family: React.FC = () => {
             Family Members
           </h1>
           <p className="mt-1 text-sm text-gray-500">
-            Manage your family members and pets
+            Manage your family members (both humans and pets)
           </p>
         </div>
         <div className="mt-4 flex md:ml-4 md:mt-0">
@@ -85,15 +86,15 @@ const Family: React.FC = () => {
       <div>
         <h2 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
           <User className="h-5 w-5 mr-2 text-blue-600" />
-          Family Members ({humans.length})
+          Humans ({humans.length})
         </h2>
         {humans.length === 0 ? (
           <Card>
             <CardContent className="p-6 text-center">
               <User className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500">No family members added yet.</p>
+              <p className="text-gray-500">No humans added yet.</p>
               <Link to="/family/new" className="mt-4 inline-block">
-                <Button variant="outline">Add First Member</Button>
+                <Button variant="outline">Add First Human</Button>
               </Link>
             </CardContent>
           </Card>
@@ -102,13 +103,16 @@ const Family: React.FC = () => {
             {humans.map((member) => (
               <Card key={member.id}>
                 <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
+                  <div className="space-y-3">
                     <div className="flex items-center space-x-3">
                       <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
                         <User className="h-6 w-6 text-blue-600" />
                       </div>
-                      <div>
-                        <h3 className="text-sm font-medium text-gray-900">{member.name}</h3>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-sm font-medium text-gray-900">{member.name}</h3>
+                          <IconDisplay familyMember={member} size={16} />
+                        </div>
                         <p className="text-sm text-gray-500">
                           {member.dateOfBirth && (
                             <>Born: {new Date(member.dateOfBirth).toLocaleDateString()}</>
@@ -116,7 +120,7 @@ const Family: React.FC = () => {
                         </p>
                       </div>
                     </div>
-                    <div className="flex space-x-2">
+                    <div className="flex justify-end space-x-2">
                       <Link to={`/family/${member.id}/edit`}>
                         <Button variant="outline" size="sm">
                           <Edit className="h-4 w-4" />
@@ -163,13 +167,16 @@ const Family: React.FC = () => {
             {pets.map((member) => (
               <Card key={member.id}>
                 <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
+                  <div className="space-y-3">
                     <div className="flex items-center space-x-3">
                       <div className="h-10 w-10 rounded-full bg-pink-100 flex items-center justify-center">
                         <Heart className="h-6 w-6 text-pink-600" />
                       </div>
-                      <div>
-                        <h3 className="text-sm font-medium text-gray-900">{member.name}</h3>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-sm font-medium text-gray-900">{member.name}</h3>
+                          <IconDisplay familyMember={member} size={16} />
+                        </div>
                         <p className="text-sm text-gray-500">
                           {member.dateOfBirth && (
                             <>Born: {new Date(member.dateOfBirth).toLocaleDateString()}</>
@@ -177,7 +184,7 @@ const Family: React.FC = () => {
                         </p>
                       </div>
                     </div>
-                    <div className="flex space-x-2">
+                    <div className="flex justify-end space-x-2">
                       <Link to={`/family/${member.id}/edit`}>
                         <Button variant="outline" size="sm">
                           <Edit className="h-4 w-4" />

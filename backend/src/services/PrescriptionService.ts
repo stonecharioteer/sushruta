@@ -1,6 +1,7 @@
 import { Repository } from 'typeorm';
 import { AppDataSource } from '../config/database';
 import { Prescription } from '../models/Prescription';
+import { MedicationLog } from '../models/MedicationLog';
 import { FamilyMemberService } from './FamilyMemberService';
 import { MedicationService } from './MedicationService';
 import { AppError } from '../middleware/errorHandler';
@@ -21,11 +22,13 @@ export interface UpdatePrescriptionDTO {
 
 export class PrescriptionService {
   private prescriptionRepository: Repository<Prescription>;
+  private medicationLogRepository: Repository<MedicationLog>;
   private familyMemberService: FamilyMemberService;
   private medicationService: MedicationService;
 
   constructor() {
     this.prescriptionRepository = AppDataSource.getRepository(Prescription);
+    this.medicationLogRepository = AppDataSource.getRepository(MedicationLog);
     this.familyMemberService = new FamilyMemberService();
     this.medicationService = new MedicationService();
   }
@@ -125,6 +128,11 @@ export class PrescriptionService {
 
   async delete(id: string): Promise<void> {
     const prescription = await this.findById(id);
+    
+    // Delete all medication logs for this prescription first
+    await this.medicationLogRepository.delete({ prescriptionId: id });
+    
+    // Then delete the prescription
     await this.prescriptionRepository.remove(prescription);
   }
 }

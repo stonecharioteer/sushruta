@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { FamilyMemberType, MedicationStatus } from '../models';
+import { FamilyMemberType, Gender, Species, MedicationStatus } from '../models';
 
 // Common schemas
 export const uuidSchema = Joi.string().uuid();
@@ -14,6 +14,18 @@ export const createFamilyMemberSchema = {
     name: Joi.string().min(1).max(255).required(),
     type: Joi.string().valid(...Object.values(FamilyMemberType)).default(FamilyMemberType.HUMAN),
     dateOfBirth: Joi.date().optional(),
+    gender: Joi.string().valid(...Object.values(Gender)).optional(),
+    species: Joi.string().valid(...Object.values(Species)).optional(),
+  }).custom((value, helpers) => {
+    // Species can only be set for pets
+    if (value.species && value.type !== FamilyMemberType.PET) {
+      return helpers.error('any.invalid', { message: 'Species can only be set for pets' });
+    }
+    // Species is required for pets
+    if (value.type === FamilyMemberType.PET && !value.species) {
+      return helpers.error('any.required', { message: 'Species is required for pets' });
+    }
+    return value;
   }),
 };
 
@@ -25,6 +37,18 @@ export const updateFamilyMemberSchema = {
     name: Joi.string().min(1).max(255).optional(),
     type: Joi.string().valid(...Object.values(FamilyMemberType)).optional(),
     dateOfBirth: Joi.date().optional(),
+    gender: Joi.string().valid(...Object.values(Gender)).optional(),
+    species: Joi.string().valid(...Object.values(Species)).optional(),
+  }).custom((value, helpers) => {
+    // Species can only be set for pets
+    if (value.species && value.type && value.type !== FamilyMemberType.PET) {
+      return helpers.error('any.invalid', { message: 'Species can only be set for pets' });
+    }
+    // If changing to pet type, species is required
+    if (value.type === FamilyMemberType.PET && !value.species) {
+      return helpers.error('any.required', { message: 'Species is required for pets' });
+    }
+    return value;
   }),
 };
 

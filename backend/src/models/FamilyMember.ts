@@ -6,6 +6,16 @@ export enum FamilyMemberType {
   PET = 'pet'
 }
 
+export enum Gender {
+  MALE = 'male',
+  FEMALE = 'female'
+}
+
+export enum Species {
+  CAT = 'cat',
+  DOG = 'dog'
+}
+
 @Entity('family_members')
 export class FamilyMember {
   @PrimaryGeneratedColumn('uuid')
@@ -24,7 +34,21 @@ export class FamilyMember {
   @Column({ type: 'date', nullable: true })
   dateOfBirth?: Date;
 
-  @OneToMany(() => Prescription, prescription => prescription.familyMember)
+  @Column({
+    type: 'varchar',
+    enum: Gender,
+    nullable: true
+  })
+  gender?: Gender;
+
+  @Column({
+    type: 'varchar',
+    enum: Species,
+    nullable: true
+  })
+  species?: Species;
+
+  @OneToMany(() => Prescription, prescription => prescription.familyMember, { cascade: true })
   prescriptions!: Prescription[];
 
   @CreateDateColumn()

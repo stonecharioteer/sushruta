@@ -6,7 +6,7 @@ import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import { Card, CardContent } from '@/components/ui/Card';
 import type { CreateFamilyMemberRequest } from '@/types/api';
-import { MemberType } from '@/types/api';
+import { MemberType, Gender, Species } from '@/types/api';
 
 const FamilyMemberForm: React.FC = () => {
   const navigate = useNavigate();
@@ -18,6 +18,8 @@ const FamilyMemberForm: React.FC = () => {
     name: '',
     type: MemberType.HUMAN,
     dateOfBirth: '',
+    gender: '' as Gender | '',
+    species: '' as Species | '',
     notes: ''
   });
 
@@ -34,6 +36,8 @@ const FamilyMemberForm: React.FC = () => {
           name: data.name || '',
           type: data.type || MemberType.HUMAN,
           dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth).toISOString().split('T')[0] : '',
+          gender: data.gender || '',
+          species: data.species || '',
           notes: data.notes || ''
         });
       }
@@ -68,7 +72,14 @@ const FamilyMemberForm: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Clear species when type changes from PET to HUMAN
+    if (name === 'type' && value === MemberType.HUMAN) {
+      setFormData(prev => ({ ...prev, [name]: value, species: '' }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+    
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -91,6 +102,15 @@ const FamilyMemberForm: React.FC = () => {
       newErrors.dateOfBirth = 'Please enter a valid date';
     }
 
+    // Species validation - only valid for pets and required for pets
+    if (formData.species && formData.type !== MemberType.PET) {
+      newErrors.species = 'Species can only be set for pets';
+    }
+    
+    if (formData.type === MemberType.PET && !formData.species) {
+      newErrors.species = 'Species is required for pets';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -104,6 +124,8 @@ const FamilyMemberForm: React.FC = () => {
       name: formData.name.trim(),
       type: formData.type,
       ...(formData.dateOfBirth && { dateOfBirth: formData.dateOfBirth }),
+      ...(formData.gender && { gender: formData.gender }),
+      ...(formData.species && formData.type === MemberType.PET && { species: formData.species }),
       ...(formData.notes.trim() && { notes: formData.notes.trim() })
     };
 
@@ -191,6 +213,52 @@ const FamilyMemberForm: React.FC = () => {
                 <p className="mt-1 text-sm text-red-600">{errors.dateOfBirth}</p>
               )}
             </div>
+
+            <div>
+              <label htmlFor="gender" className="block text-sm font-medium text-gray-700 mb-1">
+                Gender
+              </label>
+              <select
+                id="gender"
+                name="gender"
+                value={formData.gender}
+                onChange={handleInputChange}
+                className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 ${
+                  errors.gender ? 'border-red-500' : ''
+                }`}
+              >
+                <option value="">Select gender (optional)</option>
+                <option value={Gender.MALE}>Male</option>
+                <option value={Gender.FEMALE}>Female</option>
+              </select>
+              {errors.gender && (
+                <p className="mt-1 text-sm text-red-600">{errors.gender}</p>
+              )}
+            </div>
+
+            {formData.type === MemberType.PET && (
+              <div>
+                <label htmlFor="species" className="block text-sm font-medium text-gray-700 mb-1">
+                  Species *
+                </label>
+                <select
+                  id="species"
+                  name="species"
+                  value={formData.species}
+                  onChange={handleInputChange}
+                  className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 ${
+                    errors.species ? 'border-red-500' : ''
+                  }`}
+                >
+                  <option value="">Select species *</option>
+                  <option value={Species.CAT}>Cat</option>
+                  <option value={Species.DOG}>Dog</option>
+                </select>
+                {errors.species && (
+                  <p className="mt-1 text-sm text-red-600">{errors.species}</p>
+                )}
+              </div>
+            )}
 
             <div>
               <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-1">

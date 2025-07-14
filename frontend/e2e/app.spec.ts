@@ -119,7 +119,7 @@ test.describe('Sushruta Medicine Tracker', () => {
     
     // Navigate to Family page
     await page.locator('nav').getByRole('link', { name: 'Family' }).first().click();
-    await expect(page.getByText('Manage your family members and pets')).toBeVisible();
+    await expect(page.getByText('Manage your family members (both humans and pets)')).toBeVisible();
     
     // Navigate to Medications page
     await page.locator('nav').getByRole('link', { name: 'Medications' }).first().click();

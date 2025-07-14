@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Activity, Users, Pill, Calendar, BarChart3 } from 'lucide-react';
+import { Activity, Users, Pill, Calendar, BarChart3, FileText, Info } from 'lucide-react';
 import { cn } from '@/utils/cn';
 
 const Header: React.FC = () => {
@@ -10,7 +10,9 @@ const Header: React.FC = () => {
     { name: 'Dashboard', href: '/', icon: BarChart3 },
     { name: 'Family', href: '/family', icon: Users },
     { name: 'Medications', href: '/medications', icon: Pill },
+    { name: 'Prescriptions', href: '/prescriptions', icon: FileText },
     { name: 'Schedule', href: '/schedule', icon: Calendar },
+    { name: 'About', href: '/about', icon: Info },
   ];
 
   return (

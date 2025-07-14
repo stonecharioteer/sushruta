@@ -121,20 +121,20 @@ const Medications: React.FC = () => {
           {filteredMedications.map((medication) => (
             <Card key={medication.id}>
               <CardContent className="p-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start space-x-3 flex-1">
+                <div className="space-y-3">
+                  <div className="flex items-start space-x-3">
                     <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
                       <Pill className="h-6 w-6 text-green-600" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-medium text-gray-900 truncate">
+                      <h3 className="text-sm font-medium text-gray-900">
                         {medication.name}
                       </h3>
                       <p className="text-sm text-gray-600">{medication.dosage}</p>
                       <p className="text-xs text-gray-500">{medication.frequency}</p>
                     </div>
                   </div>
-                  <div className="flex space-x-2 ml-2">
+                  <div className="flex justify-end space-x-2">
                     <Link to={`/medications/${medication.id}/edit`}>
                       <Button variant="outline" size="sm">
                         <Edit className="h-4 w-4" />

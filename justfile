@@ -92,7 +92,7 @@ demo:
     echo ""
     echo "⚡ Quick Start:"
     echo "   1. Open http://localhost:5416 in your browser"
-    echo "   2. Add family members (humans or pets)"
+    echo "   2. Add family members"
     echo "   3. Add medications to your inventory"
     echo "   4. Create prescriptions linking medications to family members"
     echo "   5. Track daily medication schedules and compliance"

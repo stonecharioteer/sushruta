@@ -160,13 +160,13 @@ const Schedule: React.FC = () => {
                     {prescriptions.map((prescription) => (
                       <div
                         key={prescription.id}
-                        className="flex items-center justify-between p-4 border rounded-lg"
+                        className="p-4 border rounded-lg space-y-3"
                       >
                         <div className="flex items-center space-x-4">
                           <div className="p-2 rounded-full bg-blue-100 text-blue-600">
                             <Clock className="h-4 w-4" />
                           </div>
-                          <div>
+                          <div className="flex-1 min-w-0">
                             <div className="font-medium text-gray-900">
                               {prescription.medication.name}
                             </div>
@@ -179,7 +179,7 @@ const Schedule: React.FC = () => {
                           </div>
                         </div>
                         
-                        <div className="flex space-x-2">
+                        <div className="flex justify-end">
                           <span className="px-2 py-1 text-xs bg-green-100 text-green-700 rounded-full">
                             Active
                           </span>
