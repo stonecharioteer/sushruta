@@ -42,7 +42,9 @@ const Medications: React.FC = () => {
 
   const filteredMedications = medications?.filter(medication =>
     medication.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    medication.description?.toLowerCase().includes(searchTerm.toLowerCase())
+    medication.dosage.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    medication.frequency.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    medication.instructions?.toLowerCase().includes(searchTerm.toLowerCase())
   ) || [];
 
   if (isLoading) {
@@ -128,12 +130,8 @@ const Medications: React.FC = () => {
                       <h3 className="text-sm font-medium text-gray-900 truncate">
                         {medication.name}
                       </h3>
-                      {medication.strength && (
-                        <p className="text-sm text-gray-600">{medication.strength}</p>
-                      )}
-                      {medication.form && (
-                        <p className="text-xs text-gray-500 capitalize">{medication.form}</p>
-                      )}
+                      <p className="text-sm text-gray-600">{medication.dosage}</p>
+                      <p className="text-xs text-gray-500">{medication.frequency}</p>
                     </div>
                   </div>
                   <div className="flex space-x-2 ml-2">
@@ -153,24 +151,11 @@ const Medications: React.FC = () => {
                   </div>
                 </div>
                 
-                {medication.description && (
+                {medication.instructions && (
                   <p className="mt-3 text-sm text-gray-600 line-clamp-2">
-                    {medication.description}
+                    {medication.instructions}
                   </p>
                 )}
-
-                <div className="mt-4 grid grid-cols-2 gap-2 text-xs text-gray-500">
-                  {medication.activeIngredient && (
-                    <div>
-                      <span className="font-medium">Active:</span> {medication.activeIngredient}
-                    </div>
-                  )}
-                  {medication.manufacturer && (
-                    <div>
-                      <span className="font-medium">Mfg:</span> {medication.manufacturer}
-                    </div>
-                  )}
-                </div>
 
                 <div className="mt-3 flex justify-between items-center">
                   <Link to={`/medications/${medication.id}`}>
@@ -205,15 +190,15 @@ const Medications: React.FC = () => {
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-gray-900">
-                {new Set(medications?.map(m => m.activeIngredient)).size || 0}
+                {medications?.reduce((sum, m) => sum + m.activePrescriptionsCount, 0) || 0}
               </div>
-              <div className="text-sm text-gray-500">Active Ingredients</div>
+              <div className="text-sm text-gray-500">Active Prescriptions</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-gray-900">
-                {new Set(medications?.map(m => m.manufacturer)).size || 0}
+                {new Set(medications?.map(m => m.frequency)).size || 0}
               </div>
-              <div className="text-sm text-gray-500">Manufacturers</div>
+              <div className="text-sm text-gray-500">Dosing Frequencies</div>
             </div>
           </div>
         </CardContent>

@@ -40,11 +40,6 @@ export interface CreateFamilyMemberRequest {
 export interface Medication {
   id: string;
   name: string;
-  description?: string;
-  activeIngredient?: string;
-  strength?: string;
-  form?: string;
-  manufacturer?: string;
   dosage: string;
   frequency: string;
   instructions?: string;
@@ -55,11 +50,6 @@ export interface Medication {
 
 export interface CreateMedicationRequest {
   name: string;
-  description?: string;
-  activeIngredient?: string;
-  strength?: string;
-  form?: string;
-  manufacturer?: string;
   dosage: string;
   frequency: string;
   instructions?: string;

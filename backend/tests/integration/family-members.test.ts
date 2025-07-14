@@ -1,11 +1,10 @@
 import request from 'supertest';
-import { App } from '../../app';
+import { app } from '../../src/app';
 import { DataSource } from 'typeorm';
 import { testDatabaseConfig } from '../setup/database';
-import { MemberType } from '../../types/api';
+import { FamilyMemberType } from '../../src/models';
 
 describe('Family Members API Integration Tests', () => {
-  let app: App;
   let server: any;
   let dataSource: DataSource;
 
@@ -14,9 +13,8 @@ describe('Family Members API Integration Tests', () => {
     dataSource = new DataSource(testDatabaseConfig);
     await dataSource.initialize();
     
-    // Initialize app with test database
-    app = new App(dataSource);
-    server = app.getServer();
+    // Use the imported app
+    server = app;
   });
 
   afterAll(async () => {
@@ -34,7 +32,7 @@ describe('Family Members API Integration Tests', () => {
     it('should create a human family member successfully', async () => {
       const humanData = {
         name: 'John Doe',
-        type: MemberType.HUMAN,
+        type: FamilyFamilyMemberType.HUMAN,
         dateOfBirth: '1990-01-15',
         notes: 'Father, no known allergies'
       };
@@ -58,7 +56,7 @@ describe('Family Members API Integration Tests', () => {
     it('should create a pet family member successfully', async () => {
       const petData = {
         name: 'Buddy',
-        type: MemberType.PET,
+        type: FamilyMemberType.PET,
         dateOfBirth: '2020-06-10',
         notes: 'Golden Retriever, loves treats'
       };
@@ -82,7 +80,7 @@ describe('Family Members API Integration Tests', () => {
     it('should create family member without optional fields', async () => {
       const minimalData = {
         name: 'Jane Smith',
-        type: MemberType.HUMAN
+        type: FamilyMemberType.HUMAN
       };
 
       const response = await request(server)
@@ -101,7 +99,7 @@ describe('Family Members API Integration Tests', () => {
 
     it('should validate required fields', async () => {
       const invalidData = {
-        type: MemberType.HUMAN
+        type: FamilyFamilyMemberType.HUMAN
         // Missing name
       };
 
@@ -146,7 +144,7 @@ describe('Family Members API Integration Tests', () => {
     it('should validate date format', async () => {
       const invalidData = {
         name: 'Test',
-        type: MemberType.HUMAN,
+        type: FamilyFamilyMemberType.HUMAN,
         dateOfBirth: 'invalid-date'
       };
 
@@ -174,7 +172,7 @@ describe('Family Members API Integration Tests', () => {
         .post('/api/family-members')
         .send({
           name: 'John Doe',
-          type: MemberType.HUMAN,
+          type: FamilyFamilyMemberType.HUMAN,
           dateOfBirth: '1990-01-15',
           notes: 'Father'
         });
@@ -183,7 +181,7 @@ describe('Family Members API Integration Tests', () => {
         .post('/api/family-members')
         .send({
           name: 'Buddy',
-          type: MemberType.PET,
+          type: FamilyMemberType.PET,
           dateOfBirth: '2020-06-10',
           notes: 'Golden Retriever'
         });
@@ -192,7 +190,7 @@ describe('Family Members API Integration Tests', () => {
         .post('/api/family-members')
         .send({
           name: 'Jane Smith',
-          type: MemberType.HUMAN
+          type: FamilyMemberType.HUMAN
         });
     });
 
@@ -238,7 +236,7 @@ describe('Family Members API Integration Tests', () => {
         .post('/api/family-members')
         .send({
           name: 'John Doe',
-          type: MemberType.HUMAN,
+          type: FamilyFamilyMemberType.HUMAN,
           dateOfBirth: '1990-01-15',
           notes: 'Father'
         });
@@ -279,7 +277,7 @@ describe('Family Members API Integration Tests', () => {
         .post('/api/family-members')
         .send({
           name: 'John Doe',
-          type: MemberType.HUMAN,
+          type: FamilyFamilyMemberType.HUMAN,
           dateOfBirth: '1990-01-15',
           notes: 'Father'
         });
@@ -289,7 +287,7 @@ describe('Family Members API Integration Tests', () => {
     it('should update a family member successfully', async () => {
       const updateData = {
         name: 'John Smith',
-        type: MemberType.HUMAN,
+        type: FamilyFamilyMemberType.HUMAN,
         dateOfBirth: '1990-01-15',
         notes: 'Father, updated notes'
       };
@@ -309,7 +307,7 @@ describe('Family Members API Integration Tests', () => {
     it('should validate update data', async () => {
       const invalidData = {
         name: '', // Empty name
-        type: MemberType.HUMAN
+        type: FamilyMemberType.HUMAN
       };
 
       const response = await request(server)
@@ -329,7 +327,7 @@ describe('Family Members API Integration Tests', () => {
         .post('/api/family-members')
         .send({
           name: 'John Doe',
-          type: MemberType.HUMAN
+          type: FamilyMemberType.HUMAN
         });
       memberId = response.body.id;
     });
@@ -356,7 +354,7 @@ describe('Family Members API Integration Tests', () => {
     it('should handle special characters in names', async () => {
       const specialData = {
         name: "O'Connor-Smith Jr.",
-        type: MemberType.HUMAN,
+        type: FamilyFamilyMemberType.HUMAN,
         notes: 'Special chars: àáâãäåæçèéêë'
       };
 
@@ -377,7 +375,7 @@ describe('Family Members API Integration Tests', () => {
         .post('/api/family-members')
         .send({
           name: longName,
-          type: MemberType.HUMAN,
+          type: FamilyFamilyMemberType.HUMAN,
           notes: longNotes
         })
         .expect(201);
@@ -394,7 +392,7 @@ describe('Family Members API Integration Tests', () => {
         .post('/api/family-members')
         .send({
           name: 'Future Baby',
-          type: MemberType.HUMAN,
+          type: FamilyFamilyMemberType.HUMAN,
           dateOfBirth: futureDate.toISOString().split('T')[0]
         })
         .expect(201);
@@ -407,7 +405,7 @@ describe('Family Members API Integration Tests', () => {
         .post('/api/family-members')
         .send({
           name: 'Buddy',
-          type: MemberType.PET,
+          type: FamilyMemberType.PET,
           notes: 'First Buddy - Golden Retriever'
         })
         .expect(201);
@@ -416,7 +414,7 @@ describe('Family Members API Integration Tests', () => {
         .post('/api/family-members')
         .send({
           name: 'Buddy',
-          type: MemberType.PET,
+          type: FamilyMemberType.PET,
           notes: 'Second Buddy - Labrador'
         })
         .expect(201);

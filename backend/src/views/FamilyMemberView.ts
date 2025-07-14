@@ -40,7 +40,11 @@ export class FamilyMemberView {
       id: familyMember.id,
       name: familyMember.name,
       type: familyMember.type,
-      dateOfBirth: familyMember.dateOfBirth?.toISOString().split('T')[0],
+      dateOfBirth: familyMember.dateOfBirth 
+        ? (familyMember.dateOfBirth instanceof Date 
+          ? familyMember.dateOfBirth.toISOString().split('T')[0]
+          : String(familyMember.dateOfBirth).split('T')[0])
+        : undefined,
       age,
       activePrescriptionsCount,
       createdAt: familyMember.createdAt.toISOString(),
@@ -74,7 +78,7 @@ export class FamilyMemberView {
     return familyMembers.map(member => this.format(member));
   }
 
-  private static calculateAge(birthDate: Date): number {
+  private static calculateAge(birthDate: Date | string): number {
     const today = new Date();
     const birth = new Date(birthDate);
     let age = today.getFullYear() - birth.getFullYear();

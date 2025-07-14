@@ -4,7 +4,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Layout from '@/components/layout/Layout';
 import Dashboard from '@/pages/Dashboard';
 import Family from '@/pages/Family';
+import FamilyMemberForm from '@/pages/FamilyMemberForm';
 import Medications from '@/pages/Medications';
+import MedicationForm from '@/pages/MedicationForm';
 import Schedule from '@/pages/Schedule';
 
 const queryClient = new QueryClient({
@@ -24,7 +26,11 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/family" element={<Family />} />
+            <Route path="/family/new" element={<FamilyMemberForm />} />
+            <Route path="/family/:id/edit" element={<FamilyMemberForm />} />
             <Route path="/medications" element={<Medications />} />
+            <Route path="/medications/new" element={<MedicationForm />} />
+            <Route path="/medications/:id/edit" element={<MedicationForm />} />
             <Route path="/schedule" element={<Schedule />} />
             <Route path="*" element={<div>Page not found</div>} />
           </Routes>

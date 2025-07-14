@@ -1,10 +1,9 @@
 import request from 'supertest';
-import { App } from '../../app';
+import { app } from '../../src/app';
 import { DataSource } from 'typeorm';
 import { testDatabaseConfig } from '../setup/database';
 
 describe('Medications API Integration Tests', () => {
-  let app: App;
   let server: any;
   let dataSource: DataSource;
 
@@ -13,9 +12,8 @@ describe('Medications API Integration Tests', () => {
     dataSource = new DataSource(testDatabaseConfig);
     await dataSource.initialize();
     
-    // Initialize app with test database
-    app = new App(dataSource);
-    server = app.getServer();
+    // Use the imported app
+    server = app;
   });
 
   afterAll(async () => {

@@ -1,8 +1,8 @@
 import { DataSourceOptions } from 'typeorm';
-import { FamilyMember } from '../../models/FamilyMember';
-import { Medication } from '../../models/Medication';
-import { Prescription } from '../../models/Prescription';
-import { MedicationLog } from '../../models/MedicationLog';
+import { FamilyMember } from '../../src/models/FamilyMember';
+import { Medication } from '../../src/models/Medication';
+import { Prescription } from '../../src/models/Prescription';
+import { MedicationLog } from '../../src/models/MedicationLog';
 
 export const testDatabaseConfig: DataSourceOptions = {
   type: 'sqlite',
