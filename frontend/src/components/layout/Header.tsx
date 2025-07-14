@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Heart, Users, Pill, Calendar, BarChart3 } from 'lucide-react';
+import { Activity, Users, Pill, Calendar, BarChart3 } from 'lucide-react';
 import { cn } from '@/utils/cn';
 
 const Header: React.FC = () => {
@@ -19,7 +19,7 @@ const Header: React.FC = () => {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <Heart className="h-8 w-8 text-primary-600" />
+            <Activity className="h-8 w-8 text-primary-600" />
             <span className="text-xl font-bold text-gray-900">Sushruta</span>
           </Link>
 

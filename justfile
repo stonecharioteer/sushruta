@@ -150,6 +150,13 @@ test-backend:
 test-frontend:
     docker compose -f docker-compose.test.yml run --rm frontend-test
 
+# Run end-to-end tests (requires running application)
+test-e2e:
+    #!/usr/bin/env bash
+    echo "🎭 Running end-to-end tests..."
+    cd frontend
+    npm run test:e2e
+
 # Run linting
 lint:
     #!/usr/bin/env bash
