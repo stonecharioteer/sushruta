@@ -25,9 +25,6 @@ module.exports = {
       statements: 80
     }
   },
-  moduleNameMapping: {
-    '^@/(.*)$': '<rootDir>/src/$1'
-  },
   setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
   testTimeout: 10000
 };

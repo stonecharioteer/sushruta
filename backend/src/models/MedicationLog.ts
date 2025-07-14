@@ -15,10 +15,10 @@ export class MedicationLog {
   @Column({ type: 'uuid' })
   prescriptionId!: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: process.env.DATABASE_TYPE === 'postgres' ? 'timestamp' : 'datetime' })
   scheduledTime!: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: process.env.DATABASE_TYPE === 'postgres' ? 'timestamp' : 'datetime', nullable: true })
   takenTime?: Date;
 
   @Column({
