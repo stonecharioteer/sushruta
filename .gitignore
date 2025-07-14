@@ -176,3 +176,5 @@ coverage/
 # Build outputs
 build/
 dist/
+frontend/playwright-report
+frontest/test-results/
