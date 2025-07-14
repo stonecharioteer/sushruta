@@ -1,4 +1,4 @@
-import { FamilyMember } from '@/models/FamilyMember';
+import { FamilyMember } from '../models/FamilyMember';
 
 export interface FamilyMemberResponse {
   id: string;

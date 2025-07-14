@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import { MedicationController } from '@/controllers/MedicationController';
-import { validateRequest } from '@/middleware/validation';
+import { MedicationController } from '../controllers/MedicationController';
+import { validateRequest } from '../middleware/validation';
 import { 
   createMedicationSchema, 
   updateMedicationSchema, 
   getFamilyMemberSchema 
-} from '@/utils/validationSchemas';
+} from '../utils/validationSchemas';
 
 const router = Router();
 const medicationController = new MedicationController();

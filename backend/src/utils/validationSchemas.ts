@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { FamilyMemberType, MedicationStatus } from '@/models';
+import { FamilyMemberType, MedicationStatus } from '../models';
 
 // Common schemas
 export const uuidSchema = Joi.string().uuid();

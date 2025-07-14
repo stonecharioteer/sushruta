@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
-import { AppDataSource } from '@/config/database';
-import { FamilyMember, FamilyMemberType } from '@/models/FamilyMember';
-import { AppError } from '@/middleware/errorHandler';
+import { AppDataSource } from '../config/database';
+import { FamilyMember, FamilyMemberType } from '../models/FamilyMember';
+import { AppError } from '../middleware/errorHandler';
 
 export interface CreateFamilyMemberDTO {
   name: string;

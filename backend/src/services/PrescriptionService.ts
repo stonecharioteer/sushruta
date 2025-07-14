@@ -1,9 +1,9 @@
 import { Repository } from 'typeorm';
-import { AppDataSource } from '@/config/database';
-import { Prescription } from '@/models/Prescription';
+import { AppDataSource } from '../config/database';
+import { Prescription } from '../models/Prescription';
 import { FamilyMemberService } from './FamilyMemberService';
 import { MedicationService } from './MedicationService';
-import { AppError } from '@/middleware/errorHandler';
+import { AppError } from '../middleware/errorHandler';
 
 export interface CreatePrescriptionDTO {
   familyMemberId: string;

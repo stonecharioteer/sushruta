@@ -1,15 +1,15 @@
 import { DataSource } from 'typeorm';
-import { FamilyMember } from '@/models/FamilyMember';
-import { Medication } from '@/models/Medication';
-import { Prescription } from '@/models/Prescription';
-import { MedicationLog } from '@/models/MedicationLog';
+import { FamilyMember } from '../models/FamilyMember';
+import { Medication } from '../models/Medication';
+import { Prescription } from '../models/Prescription';
+import { MedicationLog } from '../models/MedicationLog';
 import { config } from './index';
 
 const createDataSourceConfig = () => {
   const baseConfig = {
     entities: [FamilyMember, Medication, Prescription, MedicationLog],
     migrations: ['src/migrations/*.ts'],
-    synchronize: config.node.env === 'development',
+    synchronize: true, // Enable for demo - in production use migrations
     logging: config.node.env === 'development',
   };
 

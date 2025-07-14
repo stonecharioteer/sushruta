@@ -1,8 +1,8 @@
 import { Repository, Between } from 'typeorm';
-import { AppDataSource } from '@/config/database';
-import { MedicationLog, MedicationStatus } from '@/models/MedicationLog';
+import { AppDataSource } from '../config/database';
+import { MedicationLog, MedicationStatus } from '../models/MedicationLog';
 import { PrescriptionService } from './PrescriptionService';
-import { AppError } from '@/middleware/errorHandler';
+import { AppError } from '../middleware/errorHandler';
 
 export interface CreateMedicationLogDTO {
   prescriptionId: string;

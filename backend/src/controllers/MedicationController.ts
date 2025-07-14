@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { MedicationService } from '@/services/MedicationService';
-import { MedicationView, ResponseFormatter } from '@/views';
+import { MedicationService } from '../services/MedicationService';
+import { MedicationView, ResponseFormatter } from '../views';
 
 export class MedicationController {
   private medicationService: MedicationService;

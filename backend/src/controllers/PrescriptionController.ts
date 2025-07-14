@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { PrescriptionService } from '@/services/PrescriptionService';
-import { PrescriptionView, ResponseFormatter } from '@/views';
+import { PrescriptionService } from '../services/PrescriptionService';
+import { PrescriptionView, ResponseFormatter } from '../views';
 
 export class PrescriptionController {
   private prescriptionService: PrescriptionService;

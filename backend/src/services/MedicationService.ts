@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
-import { AppDataSource } from '@/config/database';
-import { Medication } from '@/models/Medication';
-import { AppError } from '@/middleware/errorHandler';
+import { AppDataSource } from '../config/database';
+import { Medication } from '../models/Medication';
+import { AppError } from '../middleware/errorHandler';
 
 export interface CreateMedicationDTO {
   name: string;

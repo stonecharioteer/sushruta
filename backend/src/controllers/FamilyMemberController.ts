@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { FamilyMemberService } from '@/services/FamilyMemberService';
-import { FamilyMemberView, ResponseFormatter } from '@/views';
-import { FamilyMemberType } from '@/models/FamilyMember';
+import { FamilyMemberService } from '../services/FamilyMemberService';
+import { FamilyMemberView, ResponseFormatter } from '../views';
+import { FamilyMemberType } from '../models/FamilyMember';
 
 export class FamilyMemberController {
   private familyMemberService: FamilyMemberService;

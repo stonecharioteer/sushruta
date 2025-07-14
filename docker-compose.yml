@@ -7,9 +7,14 @@ services:
     ports:
       - "5415:3000"
     environment:
-      - NODE_ENV=development
-      - DATABASE_URL=sqlite:./database.sqlite
-      - DATABASE_TYPE=sqlite
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://sushruta:sushruta_dev_password@db:5432/sushruta?sslmode=disable
+      - DATABASE_TYPE=postgres
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_USER=sushruta
+      - DATABASE_PASSWORD=sushruta_dev_password
+      - DATABASE_NAME=sushruta
       - PORT=3000
       - LOG_LEVEL=info
       - CORS_ORIGINS=http://localhost:5416
@@ -31,7 +36,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "5416:3000"
+      - "5416:80"
     environment:
       - VITE_API_URL=http://localhost:5415
     volumes:

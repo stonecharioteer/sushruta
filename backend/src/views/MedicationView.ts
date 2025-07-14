@@ -1,4 +1,4 @@
-import { Medication } from '@/models/Medication';
+import { Medication } from '../models/Medication';
 
 export interface MedicationResponse {
   id: string;

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { AppDataSource } from '@/config/database';
-import { ResponseFormatter } from '@/views';
+import { AppDataSource } from '../config/database';
+import { ResponseFormatter } from '../views';
 
 export class HealthController {
   healthCheck = async (req: Request, res: Response): Promise<void> => {

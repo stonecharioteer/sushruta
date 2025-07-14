@@ -3,12 +3,12 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
-import { AppDataSource } from '@/config/database';
-import { config } from '@/config';
-import { logger } from '@/config/logger';
-import { requestLogger } from '@/middleware/requestLogger';
-import { errorHandler, notFoundHandler } from '@/middleware/errorHandler';
-import { apiRoutes } from '@/routes';
+import { AppDataSource } from './config/database';
+import { config } from './config';
+import { logger } from './config/logger';
+import { requestLogger } from './middleware/requestLogger';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler';
+import { apiRoutes } from './routes';
 
 const app = express();
 

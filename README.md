@@ -2,6 +2,8 @@
 
 A family-friendly pill tracking application for managing medication schedules for humans and pets.
 
+> **Named after [Sushruta](https://en.wikipedia.org/wiki/Sushruta)**, the ancient Indian physician and surgeon often called the "Father of Surgery" and "Father of Plastic Surgery." His contributions to medicine and surgical techniques continue to influence modern healthcare practices.
+
 ## Features
 
 - 👨‍👩‍👧‍👦 **Family Management**: Track medications for all family members (humans and pets)

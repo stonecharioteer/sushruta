@@ -15,10 +15,10 @@ export class MedicationLog {
   @Column({ type: 'uuid' })
   prescriptionId!: string;
 
-  @Column({ type: 'datetime' })
+  @Column({ type: 'timestamp' })
   scheduledTime!: Date;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   takenTime?: Date;
 
   @Column({

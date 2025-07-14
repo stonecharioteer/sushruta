@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import { FamilyMemberController } from '@/controllers/FamilyMemberController';
-import { validateRequest } from '@/middleware/validation';
+import { FamilyMemberController } from '../controllers/FamilyMemberController';
+import { validateRequest } from '../middleware/validation';
 import { 
   createFamilyMemberSchema, 
   updateFamilyMemberSchema, 
   getFamilyMemberSchema 
-} from '@/utils/validationSchemas';
+} from '../utils/validationSchemas';
 
 const router = Router();
 const familyMemberController = new FamilyMemberController();

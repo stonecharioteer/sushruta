@@ -1,5 +1,5 @@
-import { MedicationLog } from '@/models/MedicationLog';
-import { MedicationLogStats } from '@/services/MedicationLogService';
+import { MedicationLog } from '../models/MedicationLog';
+import { MedicationLogStats } from '../services/MedicationLogService';
 
 export interface MedicationLogResponse {
   id: string;
