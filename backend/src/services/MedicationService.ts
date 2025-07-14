@@ -1,6 +1,8 @@
 import { Repository } from 'typeorm';
 import { AppDataSource } from '../config/database';
 import { Medication } from '../models/Medication';
+import { Prescription } from '../models/Prescription';
+import { MedicationLog } from '../models/MedicationLog';
 import { AppError } from '../middleware/errorHandler';
 
 export interface CreateMedicationDTO {
@@ -19,9 +21,13 @@ export interface UpdateMedicationDTO {
 
 export class MedicationService {
   private medicationRepository: Repository<Medication>;
+  private prescriptionRepository: Repository<Prescription>;
+  private medicationLogRepository: Repository<MedicationLog>;
 
   constructor() {
     this.medicationRepository = AppDataSource.getRepository(Medication);
+    this.prescriptionRepository = AppDataSource.getRepository(Prescription);
+    this.medicationLogRepository = AppDataSource.getRepository(MedicationLog);
   }
 
   async create(data: CreateMedicationDTO): Promise<Medication> {
@@ -77,10 +83,20 @@ export class MedicationService {
   async delete(id: string): Promise<void> {
     const medication = await this.findById(id);
     
-    if (medication.prescriptions && medication.prescriptions.length > 0) {
-      throw new AppError('Cannot delete medication that has active prescriptions', 409);
+    // Get all prescriptions for this medication
+    const prescriptions = await this.prescriptionRepository.find({
+      where: { medicationId: id }
+    });
+
+    // Delete medication logs for each prescription
+    for (const prescription of prescriptions) {
+      await this.medicationLogRepository.delete({ prescriptionId: prescription.id });
     }
 
+    // Delete all prescriptions for this medication
+    await this.prescriptionRepository.delete({ medicationId: id });
+
+    // Finally, delete the medication
     await this.medicationRepository.remove(medication);
   }
 

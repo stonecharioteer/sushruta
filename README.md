@@ -6,28 +6,46 @@ A family-friendly pill tracking application for managing medication schedules fo
 
 ## Features
 
-- 👨‍👩‍👧‍👦 **Family Management**: Track medications for all family members (humans and pets)
+- 👨‍👩‍👧‍👦 **Family Management**: Track medications for all family members
+- 🧬 **Gender & Species Tracking**: Visual icons for gender (male/female) and required pet species (cat/dog)
 - 💊 **Medication Management**: Complete CRUD operations for medications with dosage tracking
 - 📋 **Prescription Tracking**: Assign medications with schedules and active periods
 - 📱 **Mobile-First Design**: Responsive UI optimized for mobile and desktop
 - 📊 **Compliance Reporting**: Track intake history and missed doses
 - 🔄 **Daily Schedule**: Visual timeline of medication schedules
+- 🎨 **Beautiful Icons**: Fun SVG icons representing family member attributes
 - 🐳 **Docker Ready**: Easy deployment with Docker Compose
 
 ## Tech Stack
 
-- **Backend**: Express.js + TypeScript + SQLite (PostgreSQL ready)
+- **Backend**: Express.js + TypeScript + PostgreSQL
 - **Frontend**: React + TypeScript + Tailwind CSS
-- **Database**: SQLite with TypeORM (easy PostgreSQL migration)
-- **Testing**: Jest (backend) + Vitest (frontend)
+- **Database**: PostgreSQL with TypeORM (SQLite fallback available)
+- **Testing**: Jest (backend) + Vitest (frontend) + Playwright (E2E)
 - **Architecture**: MVC pattern + 12-factor app methodology
+- **DevOps**: Docker Compose + Just commands
 
 ## Quick Start
 
 ### Prerequisites
 
 - Docker and Docker Compose
+- [Just](https://github.com/casey/just) command runner (recommended)
 - Node.js 18+ (for local development)
+
+### Super Quick Demo
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd sushruta
+
+# Start the complete demo (includes health checks and setup)
+just demo
+
+# Open the application (automatically opens browser)
+just open
+```
 
 ### Development Setup
 
@@ -38,16 +56,34 @@ A family-friendly pill tracking application for managing medication schedules fo
    cp .env.example .env
    ```
 
-2. **Start with Docker Compose**:
+2. **Start with Just commands** (recommended):
    ```bash
-   # Start all services (backend on :5415, frontend on :5416)
-   docker-compose up -d
+   # Start complete demo with health checks
+   just demo
    
    # View logs
-   docker-compose logs -f
+   just logs
+   
+   # Check status
+   just status
+   
+   # Run tests
+   just test
+   
+   # Stop services
+   just stop
    ```
 
-3. **Local development** (optional):
+3. **Or start with Docker Compose directly**:
+   ```bash
+   # Start all services (backend on :5415, frontend on :5416)
+   docker compose up -d
+   
+   # View logs
+   docker compose logs -f
+   ```
+
+4. **Local development** (optional):
    ```bash
    # Backend
    cd backend
@@ -68,32 +104,35 @@ A family-friendly pill tracking application for managing medication schedules fo
 
 ## Development Status
 
-🚧 **Currently In Development** 
+🎉 **Feature Complete - Ready for Production**
 
 ### ✅ Completed
-- Project structure and Docker configuration
-- Backend foundation with Express.js + TypeScript + TypeORM
-- Database models for family members, medications, prescriptions, and logs
-- 12-factor app configuration with environment validation
-- Middleware for error handling, validation, and logging
-- Comprehensive validation schemas
+- **Backend**: Complete Express.js + TypeScript + PostgreSQL implementation
+- **Frontend**: React + TypeScript + Tailwind CSS responsive UI
+- **Database**: PostgreSQL with TypeORM, proper entity relationships
+- **Testing**: Comprehensive test suites (Jest, Vitest, Playwright E2E)
+- **Architecture**: Full MVC pattern with Services, Views, Controllers, Routes
+- **Features**: 
+  - Family member management (humans and pets)
+  - Medication inventory and prescription tracking
+  - Daily medication schedules and compliance reporting
+  - Mobile-first responsive design
+- **DevOps**: Docker Compose setup with hot-reload development environment
+- **Documentation**: Complete API documentation and user workflows
+- **Quality**: ESLint, TypeScript, comprehensive validation
 
-### 🔄 In Progress
-- MVC architecture completion (Services, Views, Controllers, Routes)
-- Backend API endpoints implementation
-- Comprehensive test suite
+### 🔄 Current Branch: feat/pet-types
+This branch includes pet type support and represents the complete initial implementation ready for production use.
 
-### 📋 Planned
-- React frontend with Tailwind CSS
-- Responsive UI components
-- Frontend testing suite
-- End-to-end integration testing
+### 🚀 Ready for Production
+The application is feature-complete with all core functionality implemented and tested. Ready for deployment and real-world usage.
 
 ## Database Schema
 
 ```sql
--- Family members (humans and pets)
-family_members: id(uuid), name, type(enum), date_of_birth, created_at, updated_at
+-- Family members
+family_members: id(uuid), name, type(enum), date_of_birth, gender(enum), species(enum),
+                created_at, updated_at
 
 -- Available medications  
 medications: id(uuid), name, dosage, frequency, instructions, created_at, updated_at
@@ -106,6 +145,12 @@ prescriptions: id(uuid), family_member_id, medication_id, start_date, end_date,
 medication_logs: id(uuid), prescription_id, scheduled_time, taken_time, 
                 status(enum), notes, created_at
 ```
+
+### Enums
+- **type**: `human`, `pet`
+- **gender**: `male`, `female` (optional)
+- **species**: `cat`, `dog` (required for pets)
+- **status**: `pending`, `taken`, `missed`, `skipped`
 
 ## Environment Configuration
 
@@ -133,34 +178,41 @@ API_RATE_LIMIT=100
 ## Testing
 
 ```bash
-# Backend tests
-cd backend
-npm test
-npm run test:coverage
+# Run all tests (recommended)
+just test
 
-# Frontend tests (when implemented)
-cd frontend
-npm test
+# Run specific test suites
+just test-backend     # Backend unit + integration tests
+just test-frontend    # Frontend unit tests
+just test-e2e         # End-to-end tests with Playwright
 
-# Run all tests with Docker
-docker-compose -f docker-compose.test.yml up
+# Run tests manually
+cd backend && npm test           # Backend tests
+cd frontend && npm test          # Frontend tests
+cd frontend && npm run test:e2e  # E2E tests
+
+# Run with coverage
+cd backend && npm run test:coverage
+cd frontend && npm run test:coverage
 ```
 
-## Migration from SQLite to PostgreSQL
+## Database Configuration
 
-When ready to deploy:
+The application uses PostgreSQL by default with Docker Compose. For development with SQLite:
 
 1. Update environment variables:
    ```bash
-   DATABASE_TYPE=postgres
-   DATABASE_URL=postgresql://username:password@host:5432/sushruta
+   DATABASE_TYPE=sqlite
+   DATABASE_URL=sqlite:./database.sqlite
    ```
 
 2. Restart the application:
    ```bash
-   docker-compose down
-   docker-compose up -d
+   docker compose down
+   docker compose up -d
    ```
+
+For production PostgreSQL deployment, the Docker Compose setup includes a PostgreSQL service ready to use.
 
 ## Contributing
 

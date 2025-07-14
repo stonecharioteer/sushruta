@@ -32,7 +32,7 @@ describe('Family Members API Integration Tests', () => {
     it('should create a human family member successfully', async () => {
       const humanData = {
         name: 'John Doe',
-        type: FamilyFamilyMemberType.HUMAN,
+        type: FamilyMemberType.HUMAN,
         dateOfBirth: '1990-01-15',
         notes: 'Father, no known allergies'
       };
@@ -99,7 +99,7 @@ describe('Family Members API Integration Tests', () => {
 
     it('should validate required fields', async () => {
       const invalidData = {
-        type: FamilyFamilyMemberType.HUMAN
+        type: FamilyMemberType.HUMAN
         // Missing name
       };
 
@@ -144,7 +144,7 @@ describe('Family Members API Integration Tests', () => {
     it('should validate date format', async () => {
       const invalidData = {
         name: 'Test',
-        type: FamilyFamilyMemberType.HUMAN,
+        type: FamilyMemberType.HUMAN,
         dateOfBirth: 'invalid-date'
       };
 
@@ -172,7 +172,7 @@ describe('Family Members API Integration Tests', () => {
         .post('/api/family-members')
         .send({
           name: 'John Doe',
-          type: FamilyFamilyMemberType.HUMAN,
+          type: FamilyMemberType.HUMAN,
           dateOfBirth: '1990-01-15',
           notes: 'Father'
         });
@@ -236,7 +236,7 @@ describe('Family Members API Integration Tests', () => {
         .post('/api/family-members')
         .send({
           name: 'John Doe',
-          type: FamilyFamilyMemberType.HUMAN,
+          type: FamilyMemberType.HUMAN,
           dateOfBirth: '1990-01-15',
           notes: 'Father'
         });
@@ -277,7 +277,7 @@ describe('Family Members API Integration Tests', () => {
         .post('/api/family-members')
         .send({
           name: 'John Doe',
-          type: FamilyFamilyMemberType.HUMAN,
+          type: FamilyMemberType.HUMAN,
           dateOfBirth: '1990-01-15',
           notes: 'Father'
         });
@@ -287,7 +287,7 @@ describe('Family Members API Integration Tests', () => {
     it('should update a family member successfully', async () => {
       const updateData = {
         name: 'John Smith',
-        type: FamilyFamilyMemberType.HUMAN,
+        type: FamilyMemberType.HUMAN,
         dateOfBirth: '1990-01-15',
         notes: 'Father, updated notes'
       };
@@ -354,7 +354,7 @@ describe('Family Members API Integration Tests', () => {
     it('should handle special characters in names', async () => {
       const specialData = {
         name: "O'Connor-Smith Jr.",
-        type: FamilyFamilyMemberType.HUMAN,
+        type: FamilyMemberType.HUMAN,
         notes: 'Special chars: àáâãäåæçèéêë'
       };
 
@@ -375,7 +375,7 @@ describe('Family Members API Integration Tests', () => {
         .post('/api/family-members')
         .send({
           name: longName,
-          type: FamilyFamilyMemberType.HUMAN,
+          type: FamilyMemberType.HUMAN,
           notes: longNotes
         })
         .expect(201);
@@ -392,7 +392,7 @@ describe('Family Members API Integration Tests', () => {
         .post('/api/family-members')
         .send({
           name: 'Future Baby',
-          type: FamilyFamilyMemberType.HUMAN,
+          type: FamilyMemberType.HUMAN,
           dateOfBirth: futureDate.toISOString().split('T')[0]
         })
         .expect(201);

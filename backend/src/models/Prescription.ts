@@ -31,7 +31,7 @@ export class Prescription {
   @JoinColumn({ name: 'medicationId' })
   medication!: Medication;
 
-  @OneToMany(() => MedicationLog, log => log.prescription)
+  @OneToMany(() => MedicationLog, log => log.prescription, { cascade: true })
   medicationLogs!: MedicationLog[];
 
   @CreateDateColumn()

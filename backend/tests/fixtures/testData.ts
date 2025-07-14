@@ -1,16 +1,32 @@
-import { FamilyMemberType } from '../../src/models/FamilyMember';
+import { FamilyMemberType, Gender, Species } from '../../src/models/FamilyMember';
 import { MedicationStatus } from '../../src/models/MedicationLog';
 
 export const testFamilyMembers = [
   {
     name: 'John Doe',
     type: FamilyMemberType.HUMAN,
-    dateOfBirth: new Date('1990-01-01')
+    dateOfBirth: new Date('1990-01-01'),
+    gender: Gender.MALE
+  },
+  {
+    name: 'Jane Doe',
+    type: FamilyMemberType.HUMAN,
+    dateOfBirth: new Date('1992-05-15'),
+    gender: Gender.FEMALE
   },
   {
     name: 'Fluffy',
     type: FamilyMemberType.PET,
-    dateOfBirth: new Date('2020-06-15')
+    dateOfBirth: new Date('2020-06-15'),
+    gender: Gender.FEMALE,
+    species: Species.CAT
+  },
+  {
+    name: 'Max',
+    type: FamilyMemberType.PET,
+    dateOfBirth: new Date('2019-03-10'),
+    gender: Gender.MALE,
+    species: Species.DOG
   }
 ];
 

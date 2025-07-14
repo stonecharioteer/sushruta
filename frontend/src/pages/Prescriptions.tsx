@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { Plus, Trash2, User, Pill, Calendar, AlertCircle } from 'lucide-react';
+import { Plus, Trash2, User, Pill, Calendar, AlertCircle, PlayCircle } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
@@ -120,13 +120,13 @@ const Prescriptions: React.FC = () => {
             {activePrescriptions.map((prescription) => (
               <Card key={prescription.id}>
                 <CardContent className="p-6">
-                  <div className="flex items-start justify-between">
+                  <div className="space-y-3">
                     <div className="flex items-center space-x-3">
                       <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
                         <User className="h-6 w-6 text-green-600" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <h3 className="text-sm font-medium text-gray-900 truncate">
+                        <h3 className="text-sm font-medium text-gray-900">
                           {prescription.familyMember.name}
                         </h3>
                         <p className="text-sm text-gray-500">
@@ -134,7 +134,7 @@ const Prescriptions: React.FC = () => {
                         </p>
                       </div>
                     </div>
-                    <div className="flex space-x-2">
+                    <div className="flex justify-end space-x-2">
                       <Button 
                         variant="outline" 
                         size="sm"
@@ -187,13 +187,13 @@ const Prescriptions: React.FC = () => {
             {inactivePrescriptions.map((prescription) => (
               <Card key={prescription.id} className="opacity-60">
                 <CardContent className="p-6">
-                  <div className="flex items-start justify-between">
+                  <div className="space-y-3">
                     <div className="flex items-center space-x-3">
                       <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center">
                         <User className="h-6 w-6 text-gray-400" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <h3 className="text-sm font-medium text-gray-900 truncate">
+                        <h3 className="text-sm font-medium text-gray-900">
                           {prescription.familyMember.name}
                         </h3>
                         <p className="text-sm text-gray-500">
@@ -201,14 +201,24 @@ const Prescriptions: React.FC = () => {
                         </p>
                       </div>
                     </div>
-                    <Button 
-                      variant="danger" 
-                      size="sm"
-                      onClick={() => handleDelete(prescription)}
-                      loading={deletingPrescription === prescription.id}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    <div className="flex justify-end space-x-2">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleToggleActive(prescription)}
+                        title="Reactivate prescription"
+                      >
+                        <PlayCircle className="h-4 w-4" />
+                      </Button>
+                      <Button 
+                        variant="danger" 
+                        size="sm"
+                        onClick={() => handleDelete(prescription)}
+                        loading={deletingPrescription === prescription.id}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                   
                   <div className="mt-4">

@@ -6,6 +6,8 @@ export interface FamilyMemberResponse {
   type: string;
   dateOfBirth?: string;
   age?: number;
+  gender?: string;
+  species?: string;
   activePrescriptionsCount: number;
   createdAt: string;
   updatedAt: string;
@@ -46,6 +48,8 @@ export class FamilyMemberView {
           : String(familyMember.dateOfBirth).split('T')[0])
         : undefined,
       age,
+      gender: familyMember.gender,
+      species: familyMember.species,
       activePrescriptionsCount,
       createdAt: familyMember.createdAt.toISOString(),
       updatedAt: familyMember.updatedAt.toISOString()
@@ -63,8 +67,14 @@ export class FamilyMemberView {
         dosage: prescription.medication.dosage,
         frequency: prescription.medication.frequency
       },
-      startDate: prescription.startDate.toISOString().split('T')[0],
-      endDate: prescription.endDate?.toISOString().split('T')[0],
+      startDate: prescription.startDate instanceof Date 
+        ? prescription.startDate.toISOString().split('T')[0]
+        : String(prescription.startDate).split('T')[0],
+      endDate: prescription.endDate 
+        ? (prescription.endDate instanceof Date 
+          ? prescription.endDate.toISOString().split('T')[0]
+          : String(prescription.endDate).split('T')[0])
+        : undefined,
       active: prescription.active
     })) || [];
 
