@@ -4,27 +4,12 @@
 - Always update claude.md, and readme.md
 - Always use hadolint to lint dockerfiles, and if you know any other linter for docker-compose, use that.
 - IMPORTANT you MUST use linters and formatters for all code.
-- IMPORTANT always save the gameplan to claude.md so you can resume from it.
+- IMPORTANT always save the gameplan to gameplan.md so you can resume from it.
 - IMPORTANT YOU MUST RUN LINTERS TO SEE IF THE CODE IS RIGHT BEFORE YOU COMMIT.
-
-## Project Debugging Memories
-
-**RESOLVED Issues:**
-- ✅ The add family member page says "page not found" - Fixed by creating missing form components
-- ✅ The family members page shows an error when no one is added to it - Fixed with proper error handling
-- ✅ Prescription creation causing 500 errors - Fixed PrescriptionService to return with relations loaded
-- ✅ Prescription form medication dropdown not showing medications - Fixed React Query v4 syntax and API calls
-- ✅ Schedule page showing empty when prescriptions exist - Fixed to show active prescriptions instead of medication logs
-- ✅ Medication preselection not working from URL parameters - Added useSearchParams support
-- ✅ Edit family member with active prescriptions causing 500 error - Fixed date handling in FamilyMemberView to support both Date objects and strings from PostgreSQL
-- ✅ Cannot delete users with prescriptions - Implemented full cascade deletion functionality in all services (FamilyMemberService, PrescriptionService, MedicationService)
-
-**Key Architectural Decisions:**
-- Schedule page now shows active prescriptions directly rather than waiting for medication logs
-- Prescription form supports medication preselection via ?medicationId=xyz URL parameter
-- Development environment supports hot-reload via docker-compose.dev.yml
-- Date handling in backend views supports both Date objects and strings for PostgreSQL compatibility
-- Cascade deletion implemented manually in services to handle proper deletion order: medication logs → prescriptions → family member/medication
+- You must follow the test plan you create.
+- When creating tests to test a feature, ensure these are saved to the right folder for tests and written in a way that they can be run automatically. This shouldn't be temporary hacks written to some scripts in /tmp or elsewhere. And the results of the tests must not be written to git history. All tests must be replicable, so ensure that you write the tests in a TDD-inspired way (but don't be pedantic about that).
+- You must add any new behaviour to the automated tests. Backend specific changes should first go to the backend tests, and then they should be tested e2e in the frontend as well. Using curl to test is not good, use testing frameworks for this.
+- You must run tests always before pushing code.
 
 ## Project: Sushruta - Self-Hosted Medicine Tracker
 
@@ -36,7 +21,7 @@ Building a family pill-tracker application with:
 - Architecture: MVC pattern + 12-factor app methodology
 - Deployment: Docker Compose (ports 5415 backend, 5416 frontend)
 
-### Current Status (feat/pet-types branch)
+### Current Status
 - **COMPLETED**: Full-stack implementation with comprehensive features
 - **COMPLETED**: Pet and human member type support in models and frontend
 - **COMPLETED**: Complete API endpoints for family members, medications, prescriptions, logs
@@ -45,21 +30,17 @@ Building a family pill-tracker application with:
 - **COMPLETED**: Comprehensive testing suite (unit, integration, e2e)
 - **COMPLETED**: Justfile with demo commands and project management
 - **COMPLETED**: Full medication tracking workflow from creation to daily schedules
+- **COMPLETED**: Prescription cache invalidation bug fix (Issue #6)
 
-### Key Features Implemented
-- Family member management (humans and pets with type enum)
-- Medication inventory with dosage and frequency tracking
-- Prescription management with active periods
-- Daily medication schedule generation
+### Key Features
+- Family member management (humans and pets with gender/species fields)
+- Medication inventory with comprehensive tracking
+- Prescription management with pause/unpause functionality
+- Daily medication schedule generation with real-time updates
 - Compliance tracking and reporting
-- Responsive mobile-first UI
-- PostgreSQL database with TypeORM
+- Responsive mobile-first UI with SVG icons
+- PostgreSQL database with proper relationships
 - Comprehensive validation and error handling
-- End-to-end testing with Playwright
-- Docker containerization with dev/prod environments
-
-### Current Branch: feat/pet-types
-This branch includes the pet type support that was already implemented in the core models and frontend. The project appears to be feature-complete for the initial release.
 
 ### Database Architecture
 - PostgreSQL as primary database (with SQLite fallback)
@@ -86,64 +67,10 @@ This branch includes the pet type support that was already implemented in the co
 - `just lint` - Run linting for both frontend and backend
 - `just clean` - Clean up Docker containers and volumes
 
-## ✅ COMPLETED: Gender and Species Fields Implementation
+### Project Status
+The project is **production-ready** with full functionality, comprehensive testing, and documentation. Recent work completed the prescription cache invalidation bug fix with comprehensive test coverage.
 
-### Goal ✅ ACHIEVED
-Added gender field for both humans and pets, and species field for pets (cat/dog), with fun SVG icons to represent each type.
-
-### Implementation Results ✅
-1. **Backend Changes**: ✅ COMPLETED
-   - Added Gender enum (MALE, FEMALE, OTHER) to FamilyMember model
-   - Added Species enum (CAT, DOG) to FamilyMember model
-   - Updated validation schemas with conditional logic (species only for pets)
-   - Updated services, controllers, and views
-   - All API endpoints working correctly
-
-2. **Frontend Changes**: ✅ COMPLETED
-   - Updated TypeScript types and interfaces
-   - Created beautiful SVG icon components for gender and species
-   - Updated FamilyMemberForm with conditional species field
-   - Enhanced Family page display with new IconDisplay component
-   - Form validation prevents species selection for humans
-
-3. **Comprehensive Testing**: ✅ COMPLETED
-   - Backend API tests: All passing with comprehensive validation
-   - Frontend compilation: No errors, all TypeScript types correct
-   - Docker integration tests: All services working together
-   - CORS functionality: Frontend-backend communication verified
-   - Linting: Both backend and frontend pass all quality checks
-
-4. **No Regression**: ✅ VERIFIED
-   - All existing functionality continues working
-   - Existing tests pass (unit tests working)
-   - Application starts and runs without issues
-
-5. **Conditional Logic**: ✅ IMPLEMENTED
-   - Species field only appears for pets in forms
-   - Validation prevents species assignment to humans
-   - Icons display appropriately based on type and attributes
-
-### Key Features Successfully Implemented ✅
-- ✅ Gender selection for all family members (Male/Female only)
-- ✅ Species selection for pets (Cat/Dog) - **REQUIRED** field for pets
-- ✅ Beautiful SVG icons for gender (colored male/female symbols)
-- ✅ Fun SVG icons for species (cat and dog illustrations)
-- ✅ Comprehensive form validation for new fields
-- ✅ Updated family member display with IconDisplay component
-- ✅ Full test coverage and integration verification
-
-### Testing Summary ✅
-- **Backend API**: 7/7 tests passing - All CRUD operations with new fields
-- **Frontend Build**: ✅ Compiles without errors
-- **Integration**: ✅ Full-stack communication working
-- **CORS**: ✅ Frontend-backend communication verified
-- **Docker**: ✅ All services running correctly
-- **Linting**: ✅ Code quality standards met
-
-### New Components Created
-- `GenderIcon`, `MaleIcon`, `FemaleIcon`, `OtherIcon` - Gender representation
-- `SpeciesIcon`, `CatIcon`, `DogIcon` - Pet species representation  
-- `IconDisplay` - Unified component for displaying family member attributes
-- Enhanced form validation and conditional rendering logic
-
-The implementation is **production-ready** with full functionality, testing, and documentation.
+### File Organization
+- **GAMEPLAN.md**: Implementation details, bug fixes, and completed features
+- **CLAUDE.md**: Workflow memories and core project information
+- **README.md**: User-facing documentation and setup instructions

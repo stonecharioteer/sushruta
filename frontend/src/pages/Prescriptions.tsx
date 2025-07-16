@@ -36,6 +36,7 @@ const Prescriptions: React.FC = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['prescriptions']);
+        queryClient.invalidateQueries(['active-prescriptions']);
       },
       onError: (error) => {
         console.error('Error deactivating prescription:', error);
@@ -48,6 +49,7 @@ const Prescriptions: React.FC = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['prescriptions']);
+        queryClient.invalidateQueries(['active-prescriptions']);
       },
       onError: (error) => {
         console.error('Error reactivating prescription:', error);
